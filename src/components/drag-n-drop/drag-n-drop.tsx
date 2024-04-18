@@ -2,12 +2,14 @@
 
 import { useRef, useState } from "react";
 import axios from "axios";
+import { ClipLoader } from "react-spinners";
 
 type DragAndDropProps = {
   onSubmit?: (file: File) => void;
+  loading?: boolean;
 };
 
-export function DragAndDrop({ onSubmit }: DragAndDropProps) {
+export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
   const [files, setFiles] = useState<any[]>([]);
@@ -125,6 +127,13 @@ export function DragAndDrop({ onSubmit }: DragAndDropProps) {
           type="submit"
         >
           <span className="p-2 text-white">Submeter</span>
+          <ClipLoader
+            color="black"
+            loading={loading}
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
         </button>
       </form>
     </div>
