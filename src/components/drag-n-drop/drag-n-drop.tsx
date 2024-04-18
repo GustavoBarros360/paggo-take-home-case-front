@@ -124,7 +124,7 @@ export function DragAndDrop({ onSubmit }: DragAndDropProps) {
           onClick={handleSubmitFile}
           type="submit"
         >
-          <span className="p-2 text-white">Submit</span>
+          <span className="p-2 text-white">Submeter</span>
         </button>
       </form>
     </div>
