@@ -1,12 +1,23 @@
 "use client";
 
+import { isTokenExpired } from "@/app/utils/is-token-expired.util";
 import { DragAndDrop } from "@/components/drag-n-drop";
 import { H1 } from "@/components/typography";
+import { useUserStore } from "@/lib/store";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function InvoiceSubmission() {
   const [extractedText, setExtractedText] = useState("");
+
+  const router = useRouter();
+
+  const { user } = useUserStore() ?? {};
+  if (isTokenExpired(user?.token)) {
+    return router.push("/login");
+  }
+
   function handleSubmitFile(file: File) {
     if (!file) {
       return;
