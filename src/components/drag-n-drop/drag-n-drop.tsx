@@ -1,7 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
-export function DragAndDrop() {
+import axios from "axios";
+
+type DragAndDropProps = {
+  onSubmit?: (file: File) => void;
+};
+
+export function DragAndDrop({ onSubmit }: DragAndDropProps) {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
   const [files, setFiles] = useState<any[]>([]);
@@ -22,7 +28,7 @@ export function DragAndDrop() {
     if (files.length === 0) {
       // no file has been submitted
     } else {
-      // write submit logic here
+      onSubmit?.(files[0]);
     }
   }
 
@@ -116,6 +122,7 @@ export function DragAndDrop() {
         <button
           className="bg-orange-700 rounded-lg p-2 mt-3 w-auto"
           onClick={handleSubmitFile}
+          type="submit"
         >
           <span className="p-2 text-white">Submit</span>
         </button>
