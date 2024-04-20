@@ -45,7 +45,7 @@ export default function InvoiceSubmission() {
   }
 
   useEffect(() => {
-    if (isTokenExpired(user?.token)) {
+    if (isTokenExpired(user?.token ?? "")) {
       router.push("/login");
     }
   }, [user, router]);

@@ -126,11 +126,11 @@ export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
           onClick={handleSubmitFile}
           type="submit"
         >
-          <span className="p-2 text-white">Submeter</span>
+          {!loading && <span className="p-2 text-white">Submeter</span>}
           <ClipLoader
-            color="black"
+            color="white"
             loading={loading}
-            size={150}
+            size={25}
             aria-label="Loading Spinner"
             data-testid="loader"
           />
