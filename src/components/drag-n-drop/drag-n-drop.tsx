@@ -87,7 +87,7 @@ export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
         }
       />
       <form
-        className={`p-4 w-1/3 rounded-lg  min-h-[10rem] text-center flex flex-col items-center justify-center bg-white shadow-md`}
+        className={`p-4 rounded-lg w-full min-h-[10rem] text-center flex flex-col items-center justify-center bg-white shadow-md`}
         onDragEnter={handleDragEnter}
         onSubmit={(e) => e.preventDefault()}
         onDrop={handleDrop}

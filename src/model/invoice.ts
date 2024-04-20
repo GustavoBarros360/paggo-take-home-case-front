@@ -5,4 +5,5 @@ export type Invoice = {
   userId: string;
   invoiceSummary: AnalyzeExpenseCommandOutput;
   invoiceBucket?: string;
+  name?: string;
 };

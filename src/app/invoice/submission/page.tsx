@@ -6,6 +6,8 @@ import {
   FlashMessage,
   FlashMessageProps,
 } from "@/components/flash-message/flash-message";
+import { IconArrowLeft } from "@/components/icons/arrow-left.icon";
+import IconArrowRight from "@/components/icons/arrow-right.icon";
 import { H1 } from "@/components/typography";
 import { useUserStore } from "@/lib/store";
 import { Invoice } from "@/model/invoice";
@@ -62,11 +64,18 @@ export default function InvoiceSubmission() {
   }, [user, router]);
   return (
     <div className="flex flex-1 h-screen justify-center items-center">
-      <div className="flex flex-col gap-8 align-middle justify-center items-center w-full">
+      <div className="flex flex-col gap-8  justify-center mx-auto">
         <FlashMessage
           {...showFlash}
           onClose={() => setShowFlash((prev) => ({ ...prev, show: false }))}
         />
+        <button
+          className="flex items-center text-orange-700 hover:underline gap-2"
+          onClick={() => router.push("/invoice/all")}
+        >
+          Ver minhas invoices
+          <IconArrowRight />
+        </button>
         <H1>Submeter Invoice</H1>
         <DragAndDrop onSubmit={handleSubmitFile} loading={loading} />
       </div>

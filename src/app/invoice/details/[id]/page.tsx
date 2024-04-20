@@ -61,7 +61,7 @@ export default function InvoiceDetails() {
         onClick={router.back}
       >
         <IconArrowLeft />
-        Submeter outra invoice
+        Voltar
       </button>
       <H1>Resumo da invoice</H1>
 
