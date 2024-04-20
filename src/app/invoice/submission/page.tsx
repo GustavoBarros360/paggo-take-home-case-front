@@ -2,6 +2,7 @@
 
 import { isTokenExpired } from "@/app/utils/is-token-expired.util";
 import { DragAndDrop } from "@/components/drag-n-drop";
+import { FlashMessage } from "@/components/flash-message/flash-message";
 import { H1 } from "@/components/typography";
 import { useUserStore } from "@/lib/store";
 import { Invoice } from "@/model/invoice";
@@ -52,6 +53,7 @@ export default function InvoiceSubmission() {
   return (
     <div className="flex flex-1 h-screen justify-center items-center">
       <div className="flex flex-col gap-8 align-middle justify-center items-center w-full">
+        {/* <FlashMessage show={true} text="teste" variant="success" /> */}
         <H1>Submeter Invoice</H1>
         <DragAndDrop onSubmit={handleSubmitFile} loading={loading} />
       </div>

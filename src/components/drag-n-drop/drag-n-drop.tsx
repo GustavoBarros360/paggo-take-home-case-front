@@ -1,8 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
-import axios from "axios";
 import { ClipLoader } from "react-spinners";
+import {
+  FlashMessage,
+  FlashMessageProps,
+} from "../flash-message/flash-message";
 
 type DragAndDropProps = {
   onSubmit?: (file: File) => void;
@@ -12,25 +15,30 @@ type DragAndDropProps = {
 export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
-  const [files, setFiles] = useState<any[]>([]);
+  const [file, setFile] = useState<File>();
+  const [showFlashMessage, setShowFlashMessage] = useState<FlashMessageProps>({
+    show: false,
+    variant: "error",
+    text: "",
+  });
 
   function handleChange(e: any) {
     e.preventDefault();
     console.log("File has been added");
-    if (files.length > 0) return;
     if (e.target.files && e.target.files[0]) {
-      console.log(e.target.files);
-      for (let i = 0; i < e.target.files["length"]; i++) {
-        setFiles((prevState: any) => [...prevState, e.target.files[i]]);
-      }
+      setFile(e.target.files[0]);
     }
   }
 
   function handleSubmitFile(e: any) {
-    if (files.length === 0) {
-      // no file has been submitted
+    if (!file) {
+      setShowFlashMessage({
+        show: true,
+        text: "Por favor, escolha um arquivo para submeter",
+        variant: "error",
+      });
     } else {
-      onSubmit?.(files[0]);
+      onSubmit?.(file);
     }
   }
 
@@ -39,9 +47,7 @@ export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
     e.stopPropagation();
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      for (let i = 0; i < e.dataTransfer.files["length"]; i++) {
-        setFiles((prevState: any) => [...prevState, e.dataTransfer.files[i]]);
-      }
+      setFile(e.target.files[0]);
     }
   }
 
@@ -63,11 +69,8 @@ export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
     setDragActive(true);
   }
 
-  function removeFile(fileName: any, idx: any) {
-    const newArr = [...files];
-    newArr.splice(idx, 1);
-    setFiles([]);
-    setFiles(newArr);
+  function removeFile() {
+    setFile(undefined);
   }
 
   function openFileExplorer() {
@@ -77,6 +80,12 @@ export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
 
   return (
     <div className="flex items-center justify-center w-full">
+      <FlashMessage
+        {...showFlashMessage}
+        onClose={() =>
+          setShowFlashMessage((prev) => ({ ...prev, show: false }))
+        }
+      />
       <form
         className={`p-4 w-1/3 rounded-lg  min-h-[10rem] text-center flex flex-col items-center justify-center bg-white shadow-md`}
         onDragEnter={handleDragEnter}
@@ -106,25 +115,26 @@ export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
           para fazer o upload
         </p>
 
-        <div className="flex flex-col items-center p-3">
-          {files.map((file: any, idx: any) => (
-            <div key={idx} className="flex flex-row space-x-5">
-              <span>{file.name}</span>
+        {file && (
+          <div className="flex flex-col items-center p-3">
+            <div className="flex flex-row space-x-5">
+              <span>{file?.name}</span>
               <span
                 className="text-red-500 cursor-pointer"
-                onClick={() => removeFile(file.name, idx)}
+                onClick={removeFile}
+                role="button"
               >
-                remove
+                remover
               </span>
             </div>
-          ))}
-        </div>
+          </div>
+        )}
 
         <button
           className="bg-orange-700 rounded-lg p-2 mt-3 w-100 disabled:opacity-50 flex justify-center"
           onClick={handleSubmitFile}
           type="submit"
-          disabled={!files.length}
+          disabled={!file}
         >
           {!loading && <span className="p-2 text-white">Submeter</span>}
           <ClipLoader
