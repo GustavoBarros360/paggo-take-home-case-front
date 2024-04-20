@@ -21,7 +21,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-col h-screen justify-center items-center">
-      <div className="flex flex-col gap-4 bg-white p-16 rounded-lg shadow shadow-md">
+      <div className="flex flex-col gap-4 bg-white p-16 rounded-lg shadow-md">
         <H1>Login</H1>
         <button
           onClick={() =>

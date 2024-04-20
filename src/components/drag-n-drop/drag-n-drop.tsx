@@ -78,14 +78,13 @@ export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
   return (
     <div className="flex items-center justify-center w-full">
       <form
-        className={`p-4 w-1/3 rounded-lg  min-h-[10rem] text-center flex flex-col items-center justify-center border border-gray-50 shadow-gray-700 shadow-lg`}
+        className={`p-4 w-1/3 rounded-lg  min-h-[10rem] text-center flex flex-col items-center justify-center bg-white shadow-md`}
         onDragEnter={handleDragEnter}
         onSubmit={(e) => e.preventDefault()}
         onDrop={handleDrop}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
       >
-        {/* this input element allows us to select files for upload. We make it hidden so we can activate it when the user clicks select files */}
         <input
           placeholder="fileInput"
           className="hidden"
@@ -122,9 +121,10 @@ export function DragAndDrop({ onSubmit, loading }: DragAndDropProps) {
         </div>
 
         <button
-          className="bg-orange-700 rounded-lg p-2 mt-3 w-auto"
+          className="bg-orange-700 rounded-lg p-2 mt-3 w-100 disabled:opacity-50 flex justify-center"
           onClick={handleSubmitFile}
           type="submit"
+          disabled={!files.length}
         >
           {!loading && <span className="p-2 text-white">Submeter</span>}
           <ClipLoader
