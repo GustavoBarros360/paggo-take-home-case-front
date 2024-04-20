@@ -13,6 +13,7 @@ import {
 } from "@/components/flash-message/flash-message";
 import { IconArrowLeft } from "@/components/icons/arrow-left.icon";
 import { ClipLoader } from "react-spinners";
+import { ExpenseField } from "@aws-sdk/client-textract";
 
 export default function InvoiceDetails() {
   const params = useParams<{ id: string }>();
@@ -30,6 +31,10 @@ export default function InvoiceDetails() {
 
   const { id } = params;
 
+  const handleCompleted = (result: Invoice) => {
+    setInvoice(result);
+  };
+
   useEffect(() => {
     if (isTokenExpired(user?.token)) {
       router.push("/login");
@@ -39,7 +44,7 @@ export default function InvoiceDetails() {
       .get<Invoice>(`http://localhost:3000/invoice/${id}`, {
         headers: { "x-oauth-token": user?.token },
       })
-      .then((response) => setInvoice(response.data))
+      .then((response) => handleCompleted(response.data))
       .catch((error) =>
         setShowFlash({ show: true, variant: "error", text: error.message })
       )
@@ -70,7 +75,28 @@ export default function InvoiceDetails() {
         data-testid="loader"
       />
 
-      {!!invoice && <p>{invoice.invoiceSummary}</p>}
+      <div className="flex flex-wrap gap-4">
+        {!!invoice &&
+          invoice.invoiceSummary.ExpenseDocuments?.map((doc) => {
+            return doc?.SummaryFields?.map((field, index) => {
+              return (
+                <div
+                  className="flex flex-col gap-2 bg-white shadow rounded-lg px-4 py-2 justify-center"
+                  key={`${doc.ExpenseIndex}-${field.LabelDetection?.Text}-${field.ValueDetection?.Text}-${index}`}
+                >
+                  {field.LabelDetection?.Text ? (
+                    <strong>{field.LabelDetection?.Text}</strong>
+                  ) : (
+                    <strong>{field.Type?.Text}</strong>
+                  )}
+                  <div className="border rounded-lg border-gray-500 bg-gray-200 p-2">
+                    <span>{field.ValueDetection?.Text}</span>
+                  </div>
+                </div>
+              );
+            });
+          })}
+      </div>
     </div>
   );
 }

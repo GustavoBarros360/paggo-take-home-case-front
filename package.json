@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-textract": "^3.556.0",
     "axios": "^1.6.8",
     "firebase": "^10.11.0",
     "jose": "^5.2.4",
